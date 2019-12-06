@@ -1,13 +1,13 @@
 {
   "name": "learning-q4",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple static API to use with Docker inside of a Jenkins pipeline",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint --fix src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "skippy107",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^6.6.0",
