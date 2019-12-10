@@ -8,7 +8,7 @@ node {
         withDockerNetwork{ n ->
             docker.image('api-server').withRun("--network ${n} --name todo-api  -p 3000:3000") { c->
                 docker.image('postman/newman').inside("--network ${n} -v ${PWD}:/etc/newman") {
-                    sh "newman run tests/learning-day.json -e tests/learning-day-env.json"
+                    bat "newman run tests/learning-day.json -e tests/learning-day-env.json"
                 }
             }
         }
@@ -19,10 +19,10 @@ node {
 def withDockerNetwork(Closure inner) {
     try {
         networkId = UUID.randomUUID().toString()
-        sh "docker network create ${networkId}"
+        bat "docker network create ${networkId}"
         inner.call(networkId)
     } finally {
-        sh "docker network rm ${networkId}"
+        bat "docker network rm ${networkId}"
     }
 }
 
