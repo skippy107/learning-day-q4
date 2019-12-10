@@ -6,7 +6,7 @@ node {
 
     stage('Launching server and running tests') {
         withDockerNetwork{ n ->
-            docker.image('api-server').withRun("--network ${n} --name  -p 3000:3000") { c->
+            docker.image('api-server').withRun("--network ${n} --name todo-api  -p 3000:3000") { c->
                 docker.image('postman/newman').inside("--network ${n} -v ${WORKSPACE}:/etc/newman") {
                     sh "newman tests/learning-day.json -e tests/learning-day-env.json"
                 }
