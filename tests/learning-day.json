@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "d8a5314a-9b5a-4b62-aec5-e9efc37fb666",
+		"name": "upsert-validation",
+		"description": "This group of requests will verify that related data is correctly changed after an *UPSERT* operation.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add New Todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3e97b4ad-e0c9-4a97-bc10-eedff0115ccf",
+						"exec": [
+							"pm.test(\"Verify request response code\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"    ",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"id\", jsonData.id);",
+							"    ",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n   \"note\": \"latest TODO in the series\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}{{path}}",
+					"host": [
+						"{{url}}{{path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Todos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}{{path}}",
+					"host": [
+						"{{url}}{{path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Todo By Id",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "bc44656d-9aed-4a18-9e58-24af481e6c84",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}{{path}}/{{id}}",
+					"host": [
+						"{{url}}{{path}}"
+					],
+					"path": [
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
