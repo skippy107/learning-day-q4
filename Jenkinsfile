@@ -1,5 +1,4 @@
 node {
-    stages {
         stage('Building application server image') {
             steps{
                 checkout scm
@@ -18,9 +17,8 @@ node {
                     }
                 }
             }
-        }
 
-    }
+        }
     
 }
 def withDockerNetwork(Closure inner) {
