@@ -6,18 +6,26 @@ node {
     }
 
     stage('Launching server and running tests') {
-        networkId = "learning-net"
-        bat "docker network create ${networkId}"
-         
-        docker.image('api-server').withRun("--network ${networkId} --name todo-api  -p 3000:3000") { c->
-            docker.image('postman/newman').inside("--network ${networkId} -v ${PWD}:/etc/newman run tests/learning-day.json -e tests/learning-day-env.json") 
-        }
-        
-        bat "docker network rm ${networkId}"
+        withDockerNetwork{ n ->
+            docker.image('api-server').withRun("--network ${n} --name todo-api -p 3000:3000") { c->
+                docker.image('postman/newman').inside("--network ${n} -v ${PWD}:/etc/newman run tests/learning-day.json \
+            -e tests/learning-day-env.json") {
+                    // do something with host "sidecar"
+                }
+            }
+        } 
     }
     
 }
-
+def withDockerNetwork(Closure inner) {
+    try {
+        networkId = UUID.randomUUID().toString()
+        sh "docker network create ${networkId}"
+        inner.call(networkId)
+    } finally {
+        sh "docker network rm ${networkId}"
+    }
+}
 
 /*
 ***********************************************
