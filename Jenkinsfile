@@ -6,7 +6,7 @@ node {
     }
 
     stage('Launching server and running tests') {
-        networkId = UUID.randomUUID().toString()
+        networkId = "learning-net"
         bat "docker network create ${networkId}"
          
         docker.image('api-server').withRun("--network ${networkId} --name todo-api  -p 3000:3000") { c->
