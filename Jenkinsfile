@@ -1,3 +1,4 @@
+
 node {
     stage('Building application server image') {
         checkout scm
@@ -8,10 +9,10 @@ node {
         networkId = UUID.randomUUID().toString()
         bat "docker network create ${networkId}"
          
-        docker.image('api-server').withRun("--network ${networkId} --name todo-api  -p 3000:3000")
+        docker.image('api-server').withRun("--network ${networkId} --name todo-api  -p 3000:3000") { c->
+            docker.image('postman/newman').inside("--network ${networkId} -v ${PWD}:/etc/newman run tests/learning-day.json -e tests/learning-day-env.json") 
+        }
         
-        docker.image('postman/newman').inside("--network ${networkId} -v ${PWD}:/etc/newman run tests/learning-day.json -e tests/learning-day-env.json") 
-    
         bat "docker network rm ${networkId}"
     }
     
