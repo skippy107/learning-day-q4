@@ -1,24 +1,19 @@
 node {
-        stage('Building application server image') {
-            steps{
-                checkout scm
+    stage('Building application server image') {
+        checkout scm
+        docker.build("api-server")
+    }
 
-                docker.build("api-server")
-            }
-        }
-
-        stage('Launching server and running tests') {
-            steps{
-                withDockerNetwork{ n ->
-                    docker.image('api-server').withRun("--network ${n} --name  -p 3000:3000") { c->
-                        docker.image('postman/newman').inside("--network ${n} -v ${WORKSPACE}:/etc/newman") {
-                            sh "newman tests/learning-day.json -e tests/learning-day-env.json"
-                        }
-                    }
+    stage('Launching server and running tests') {
+        withDockerNetwork{ n ->
+            docker.image('api-server').withRun("--network ${n} --name  -p 3000:3000") { c->
+                docker.image('postman/newman').inside("--network ${n} -v ${WORKSPACE}:/etc/newman") {
+                    sh "newman tests/learning-day.json -e tests/learning-day-env.json"
                 }
             }
-
         }
+
+    }
     
 }
 def withDockerNetwork(Closure inner) {
