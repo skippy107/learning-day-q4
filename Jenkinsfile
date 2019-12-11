@@ -8,9 +8,9 @@ node {
     stage('Launching server and running tests') {
         withDockerNetwork{ n ->
             docker.image('api-server').withRun("--network ${n} --name todo-api -p 3000:3000") { c->
-                docker.image('postman/newman').inside("--network ${n} -v ${WORKSPACE}:/etc/newman postman/newman 'tests/learning-day.json \
-            -e tests/learning-day-env.json'") {
+                docker.image('postman/newman').inside("--network ${n} -v ${WORKSPACE}:/etc/newman") {
                     // do something with host "sidecar"
+                    sh "newman run tests/learning-day.json -e tests/learning-day-env.json"
                 }
             }
         } 
