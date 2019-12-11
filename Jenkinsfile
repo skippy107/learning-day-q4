@@ -29,7 +29,12 @@ def withDockerNetwork(Closure inner) {
 
 /*
 ***********************************************
+Automated Test Steps
+docker-compose up    // builds from docker-compose.yml and launches Jenkins
 
+From inside Jenkins, run the learning-day-q4 build
+
+Manual Test Steps
 create network
 docker network create --driver bridge learning-net
 
