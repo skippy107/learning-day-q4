@@ -4,3 +4,5 @@ Dockerfile
 .dockerignore
 .gitignore
 .git
+home
+jenkins_data
